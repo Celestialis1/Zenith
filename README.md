@@ -1,135 +1,82 @@
-# Zenith
-> ⚠️ **Notice:**  
-> Source code will be released after final polish and testing — planned for next month.
 
-
-**Zenith** is a lightweight, universal Linux app installer. It supports `.AppImage`, `.deb`, `.tar.gz`, `.snap`, `.flatpak`, and URL-based installs — with smart binary linking and local tracking.
-
-Think of it as a user-friendly package handler for non-repo applications.
+# Zenith: Universal Linux Package Installer  
+**Streamlined application deployment with unified package management**  
+**Public Release: August 2025** (Approximately 3–4 weeks)
 
 ---
 
-## ✨ Features
-
-- 🗃️ Handles `.appimage`, `.tar.gz`, `.deb`, `.snap`, `.flatpak`, and direct URLs
-- 📦 Auto-detects and links binaries to `/usr/local/bin`
-- 📋 Tracks installations in a local JSON database
-- 🔁 Self-updates (`zenith update`)
-- 🚀 Simple commands: `install`, `list`, `uninstall`, `config`
-- 💡 Minimal dependencies, no root required (except for system installs)
+> **Early-Access Preview Notice**  
+> Source code is currently completing internal quality assurance and will be published on GitHub in August 2025.  
+> This documentation reflects the finalized pre-release implementation – all described features are fully implemented and tested.
 
 ---
 
-## 📦 Installation
+## Key Capabilities
 
-### Manual
+| Operation | Command |
+|-----------|---------|
+| Install `.tar.gz`/`.tar.xz`/`.tar.bz2` (flat/nested) | `zenith install -auto <file.tar.gz>` |
+| Install `.AppImage` | `zenith install -auto <app.AppImage>` |
+| Install `.deb`, `.snap`, `.flatpak` | `zenith install -auto <package>` |
+| Install from URL | `zenith install -auto <https://.../app.AppImage>` |
+| Remove applications | `zenith uninstall <name>` |
+| List installed applications | `zenith list` |
+| Update installer | `zenith update` |
+
+---
+
+## Version 2.0 Feature Highlights
+
+- **Permission-adaptive installation**: Automatically installs to `/opt` when permitted, otherwise uses `~/.local/zenith/apps` without requiring sudo privileges
+- **Interactive installation prompts**: Configure applications as terminal or GUI during installation (sets `Terminal` property in `.desktop` files)
+- **Flat tarball handling**: Automatically creates container directories for archives lacking top-level folders
+- **User-space integration**: Creates executable symlinks in `~/.local/bin` (standard PATH location)
+- **Icon management**: Extracts application icons from AppImages/tarballs with fallback to default icon
+- **Centralized management**: Maintains installation database in `~/.zenith/`
+
+---
+
+## Installation and Usage
 
 ```bash
-git clone https://github.com/Celestialis1/Zenith
-cd zenith
-python3 zenith.py self-install
-````
+# Install Zenith
+curl -sSL https://raw.githubusercontent.com/Celestialis1/Zenith/main/zenith.py \
+  | sudo tee /usr/local/bin/zenith > /dev/null && sudo chmod +x /usr/local/bin/zenith
 
-### Or Run Ad-Hoc
+# Install application
+zenith install -auto ~/Downloads/seanime-2.9.0_Linux_x86_64.tar.gz
 
-```bash
-python3 zenith.py install <target>
-```
-
-Example:
-
-```bash
-python3 zenith.py install -deb ~/Downloads/code.deb
+# Execute installed application
+seanime
 ```
 
 ---
 
-## 🛠 Usage
+## Filesystem Structure
 
-### Basic Install
-
-```bash
-zenith install <file_or_url>
-```
-
-### Install Flags
-
-| Flag        | Description                         |
-| ----------- | ----------------------------------- |
-| `-deb`      | Force `.deb` install                |
-| `-tar`      | Force `.tar.gz` install             |
-| `-appimage` | Force `.AppImage` install           |
-| `-flatpak`  | Flatpak file or ID                  |
-| `-snap`     | Snap file or app ID                 |
-| `-url`      | Direct download from URL            |
-| `-auto`     | Auto-detect type (default behavior) |
-
-### Other Commands
-
-```bash
-zenith list             # Show installed apps
-zenith uninstall <app>  # Remove app and references
-zenith config           # Edit the config JSON
-zenith self-update      # Update Zenith to latest version
-zenith help             # Show usage info
-```
+| Location | Purpose |
+|----------|---------|
+| `~/.local/zenith/apps/` | User-space application installations |
+| `~/.local/bin/` | Application binary symlinks (PATH accessible) |
+| `~/.local/share/applications/` | Generated desktop entries |
+| `~/.zenith/` | Configuration and installation database |
+| `/opt/` | System-wide installations (when permitted) |
 
 ---
 
-## 🔍 Example
+## Technical Requirements
 
-```bash
-zenith install https://downloads.slack-edge.com/linux_releases/slack-desktop-4.35.131-amd64.deb
-zenith install -appimage ~/Downloads/Obsidian-1.5.3.AppImage
-```
-
----
-
-## 🧾 Config
-
-Zenith stores settings and install metadata in:
-
-```
-~/.config/zenith/
-├── config.json
-└── installed.json
-```
-
-You can customize install paths, default behavior, and more by editing `config.json`.
+- Python 3.7+ (standard library only)
+- Recommended: `python-magic` for enhanced MIME type detection
+- No external dependencies
 
 ---
 
-## 🧰 Requirements
-
-* Python 3.7+
-* `requests`, `tqdm`, `colorama`, `rich`
-* Optional: `python-magic` (for MIME type fallback)
-
-Install dependencies with:
-
-```bash
-pip install -r requirements.txt
-```
+## License
+MIT License - freely usable, modifiable, and distributable
 
 ---
 
-## 📎 Roadmap
-
-* [ ] Github Release
-* [ ] Application Icons
-* [ ] Manifest files (`.zenith.json`)
-* [ ] Plugin system for custom install logic
-* [ ] `.desktop` launcher generation (optional)
-* [ ] GUI frontend
-
----
-
-## 📜 License
-
-MIT — free to use, modify, and share.
-
----
-
-```bash
-sudo rm -rf complexity
-```
+> **Release Timeline**  
+> The public repository and production-ready install script will be available in August 2025.  
+> This documentation represents the final pre-release specification.
