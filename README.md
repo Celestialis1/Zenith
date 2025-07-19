@@ -72,6 +72,82 @@ seanime
 
 ---
 
+## Frequently Asked Questions (FAQ)
+
+### ❓ Does Zenith handle `.tar` files differently from `.AppImage`?
+
+**Yes.**
+AppImages are self-contained and require minimal setup. Zenith simply copies the file, sets execution permissions, and (optionally) generates a `.desktop` launcher with icon support.
+
+`.tar` archives, however, require extraction and post-processing. Zenith:
+
+* Detects whether the archive has a top-level directory or is flat
+* Moves contents to a sandboxed location
+* Searches for the main executable
+* Optionally creates a launcher and icon
+  Some `.tar` packages may require manual tweaks if they lack a clear structure or launcher binary.
+
+---
+
+### ❓ Does Zenith require `sudo` or root access?
+
+**No, not by default.**
+Zenith is designed to install everything into user-space (`~/.local/zenith/apps/`) by default.
+If `sudo` is available, it offers to install system-wide to `/opt`, but this is optional and permission-aware.
+
+---
+
+### ❓ Can I install apps from a URL?
+
+**Yes.**
+Zenith supports direct URL installation of any supported format:
+
+```bash
+zenith install -auto https://example.com/tool.AppImage
+```
+
+It automatically detects and processes the file after download.
+
+---
+
+### ❓ What happens if the app has no desktop icon?
+
+Zenith attempts to extract an icon from the application. If none is found, it falls back to a generic icon. You can later replace or edit the icon manually in `~/.local/share/applications/`.
+
+---
+
+### ❓ Can I remove or update apps?
+
+* To remove:
+
+```bash
+zenith uninstall <app-name>
+```
+
+* Zenith does **not** currently auto-update individual apps, but you can re-run the install with a newer version to overwrite an old one.
+* To update Zenith itself:
+
+```bash
+zenith update
+```
+
+---
+
+### ❓ Where are installed files stored?
+
+All user-space installs go to:
+
+* Apps: `~/.local/zenith/apps/`
+* Executables: `~/.local/bin/`
+* Icons/Desktop files: `~/.local/share/applications/`
+* Metadata: `~/.zenith/`
+
+---
+
+Let me know if you'd like to include troubleshooting tips, advanced options, or developer notes as well.
+
+---
+
 ## License
 MIT License - freely usable, modifiable, and distributable
 
